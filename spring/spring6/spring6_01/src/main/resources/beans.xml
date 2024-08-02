@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="user" class="com.atguigu.mySpring.User"/>
+    <!--    教室-->
+    <bean id="classroomOne" class="com.atguigu.mySpring.Classroom" scope="prototype">
+        <constructor-arg name="id" value="1"/>
+        <constructor-arg name="name" value="高一二班"/>
+        <constructor-arg name="address" value="东教学楼103"/>
+    </bean>
+    <bean id="classroomTwo" class="com.atguigu.mySpring.Classroom">
+        <constructor-arg name="id" value="2"/>
+        <constructor-arg name="name" value="高二二班"/>
+        <constructor-arg name="address" value="东教学楼203"/>
+    </bean>
+    <!--    学生-->
+    <bean id="studentOne" class="com.atguigu.mySpring.Student">
+        <!--        无参构造函数，里面不用写构造函数参数；参数有默认值，里面写属性-->
+        <property name="id" value="1001"/>
+        <property name="name" value="张三"/>
+        <property name="age" value="23"/>
+        <property name="sex" value="男"/>
+    </bean>
+    <bean id="studentTwo" class="com.atguigu.mySpring.Student">
+        <!--        按顺序写的，也可以指定name或index来指定是哪个参数-->
+        <constructor-arg name="id" value="1002"/>
+        <constructor-arg name="name" value="李四"/>
+        <constructor-arg name="age" value="33"/>
+        <constructor-arg name="sex" value="女"/>
+        <!--        如果只有它一个实例用到了classroomOne，也可以写成内部bean的形式-->
+        <constructor-arg name="classroom" ref="classroomOne"/>
+    </bean>
+    <!--    学校-->
+    <bean id="schoolOne" class="com.atguigu.mySpring.School">
+        <constructor-arg name="address">
+            <array>
+                <value>东校区</value>
+                <value>南校区</value>
+                <value>北校区</value>
+            </array>
+        </constructor-arg>
+        <constructor-arg name="stringList">
+            <!--            ArrayList用array???-->
+            <array>
+                <value>1</value>
+                <value>2</value>
+            </array>
+        </constructor-arg>
+        <constructor-arg name="classroomList">
+            <list>
+                <ref bean="classroomOne"/>
+                <ref bean="classroomOne"/>
+                <ref bean="classroomOne"/>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="studentSet">
+            <set>
+                <ref bean="studentOne"/>
+                <ref bean="studentTwo"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg name="classroomStudentMap">
+            <map>
+                <entry key="1" value-ref="studentOne"/>
+                <entry key="1" value-ref="studentTwo"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <!--    自动装配-->
+    <bean id="autoWiredTest" class="com.atguigu.mySpring.AutoWiredTest" autowire="byType"/>
+</beans>
+

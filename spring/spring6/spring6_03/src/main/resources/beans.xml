@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--基于注解的AOP的实现： 1、将目标对象和切面交给IOC容器管理（注解+扫描） 2、开启AspectJ的自动代理，为目标对象自动生成代理
+    3、将切面类通过注解@Aspect标识
+    -->
+    <context:component-scan base-package="com.atguigu.aop.annotation"/>
+    <context:component-scan base-package="com.atguigu.resource_test"/>
+    <aop:aspectj-autoproxy/>
+
+    <!--    jdbc-->
+    <!-- 导入外部属性文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 配置数据源 -->
+    <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${jdbc.url}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!-- 配置 JdbcTemplate -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> <!-- 装配数据源 -->
+        <property name="dataSource" ref="druidDataSource"/>
+    </bean>
+
+    <!--    <bean id="resourceBean"-->
+    <!--          class="com.atguigu.resource_test.ResourceBean"> &lt;!&ndash; 可以使用file:、http:、ftp:等前缀强制Spring采用对应的资源访问策略 &ndash;&gt; &lt;!&ndash; 如果不采用任何前缀，则Spring将采用与该ApplicationContext相同的资源访问策略来访问资源 &ndash;&gt;-->
+    <!--        <property name="res" value="classpath:atguigu.txt"/>-->
+    <!--    </bean>-->
+</beans>
